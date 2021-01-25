@@ -1,10 +1,17 @@
 //Require modules and set up setting variables
 const express = require('express');
 const port = process.env.PORT || 5000;
-const session = require('express-session');
+// const session = require('express-session');
 const cors = require('cors');
 const logger = require('morgan');
-//const bodyParser = require('body-parser'); 
+
+// Load the Env Vars
+require('dotenv').config();
+
+// Require Routes Pathways
+// const favoritesRouter = require ('./routes/api/favorites');
+const reviewsRouter = require('./routes/api/reviews');
+const usersRouter = require('./routes/api/users');
 
 //const database = require('./config/database'); 
 // const mongoose = require('mongoose');
@@ -24,22 +31,12 @@ const logger = require('morgan');
 //     console.log(`Encountered an error: ${error.message}`);
 // });
 
-
-
 // Create Middleware Path
 const morgan = require('morgan');
-const methodOverride = require('method-override');
+// const methodOverride = require('method-override');
 
 //Create the Express App
 const app = express();
-
-// Require Routes Pathways
-const surfSpotsRouter = require ('./routes/api/surfSpots');
-const reviewsRouter = require('./routes/api/reviews');
-const usersRouter = require('./routes/api/users'); 
-
-// Load the Env Vars
-require('dotenv').config();
 
 // Connect to the MongoDB with Mongoose
 require('./config/database');
@@ -49,7 +46,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
-app.use(methodOverride('_method'));
+// app.use(methodOverride('_method'));
 app.use(logger('dev')); 
 app.use(express.json());
 app.use(cors());
@@ -57,11 +54,11 @@ app.use(cors());
 app.use(express.urlencoded({
     extended: true
 }));
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false
-}));
+// app.use(session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false
+// }));
 
 // make req.user available everywhere:
 app.use(function (req, res, next) {
@@ -70,7 +67,7 @@ app.use(function (req, res, next) {
 });
 
 // Mount Routes Here
-app.use('/api/surfSpots', surfSpotsRouter); 
+// app.use('/api/favorites', favoritesRouter); 
 //app.use('/api/weatherData', weatherDataRouter); 
 app.use('/api/reviews', reviewsRouter);
 app.use('/api/users', usersRouter); 

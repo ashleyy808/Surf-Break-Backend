@@ -19,4 +19,3 @@ db.on('error', function (error) {
 
 
 
-//module.exports = database; 
